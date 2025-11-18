@@ -434,7 +434,7 @@ function renderTeamCompositionReport(data) {
     // Helper functions to handle different property naming conventions
     const getPlayerValue = (player) => player.player_value || player.playerValue || 0;
     const getPlayerPosition = (player) => player.position || player.Position || '';
-    const getPlayerName = (player) => player.name || player.Name || 'Unknown';
+    const getPlayerName = (player) => player.full_name || player.name || player.Name || 'Unknown';
     
     // Handle different property naming between C# and Python backends
     const totalPlayers = data.total_players || data.totalPlayers || 0;
@@ -536,7 +536,7 @@ function renderPlayerPerformanceReport(data) {
     // Helper functions to handle different property naming conventions
     const getPlayerRating = (player) => player.rating || player.Rating || 0;
     const getPlayerPosition = (player) => player.position || player.Position || '';
-    const getPlayerName = (player) => player.name || player.Name || 'Unknown';
+    const getPlayerName = (player) => player.full_name || player.name || player.Name || 'Unknown';
     
     const html = `
         <div class="report-header">
@@ -587,7 +587,7 @@ function renderValueReport(data) {
         return parseFloat(value);
     };
     const getPlayerPosition = (player) => player.position || player.Position || '';
-    const getPlayerName = (player) => player.name || player.Name || 'Unknown';
+    const getPlayerName = (player) => player.full_name || player.name || player.Name || 'Unknown';
     
     // Debug the data we're working with
     console.log('Rendering value report with data:', data);
@@ -650,7 +650,7 @@ function renderInjuryReport(data) {
     const getPlayerValue = (player) => player.player_value || player.playerValue || 0;
     const getPlayerRating = (player) => player.rating || player.Rating || 0;
     const getPlayerPosition = (player) => player.position || player.Position || '';
-    const getPlayerName = (player) => player.name || player.Name || 'Unknown';
+    const getPlayerName = (player) => player.full_name || player.name || player.Name || 'Unknown';
     
     const html = `
         <div class="report-header">
