@@ -4,12 +4,20 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from flask_caching import Cache
 from datetime import datetime
 import json
 import os
+import requests
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
+
+# Configure Flask-Caching for joke endpoint
+cache = Cache(app, config={
+    'CACHE_TYPE': 'SimpleCache',
+    'CACHE_DEFAULT_TIMEOUT': 30  # 30 seconds cache
+})
 
 # Configure SQLAlchemy with SQLite
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/soccer_app.db'
@@ -482,6 +490,44 @@ def injury_report():
         'injury_rate': injury_rate
     }
     return jsonify(report)
+
+# Dad Joke endpoint
+@app.route('/api/joke', methods=['GET'])
+@cache.cached(timeout=30)
+def get_joke():
+    """
+    Get a random dad joke from icanhazdadjoke.com API
+    Cached for 30 seconds to reduce external API calls
+    """
+    try:
+        # Fetch new joke from external API
+        response = requests.get(
+            'https://icanhazdadjoke.com/',
+            headers={'Accept': 'application/json'},
+            timeout=5
+        )
+        
+        if response.status_code == 200:
+            joke_data = response.json()
+            result = {
+                'joke': joke_data.get('joke', 'Why did the soccer player bring string to the game? To tie the score!'),
+                'cached': False
+            }
+            return jsonify(result), 200
+        else:
+            # Fallback joke if API fails
+            fallback = {
+                'joke': 'Why did the soccer player bring string to the game? To tie the score!',
+                'cached': False
+            }
+            return jsonify(fallback), 200
+            
+    except Exception as e:
+        # Return fallback joke on any error
+        return jsonify({
+            'joke': 'Why did the soccer player bring string to the game? To tie the score!',
+            'error': str(e)
+        }), 200
 
 if __name__ == '__main__':
     # Create data directory if it doesn't exist

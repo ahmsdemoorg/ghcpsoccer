@@ -5,3 +5,4 @@ Flask-CORS==3.0.10
 SQLAlchemy==1.4.46
 Flask-SQLAlchemy==2.5.1
 requests==2.31.0
+Flask-Caching==2.0.2

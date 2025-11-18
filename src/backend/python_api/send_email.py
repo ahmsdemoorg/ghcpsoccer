@@ -14,16 +14,16 @@ class SMTPEmailSender:
         """Initialize SMTP Email Sender with configuration from environment variables"""
         self.smtp_host = os.getenv('SMTP_HOST')
         self.smtp_port = int(os.getenv('SMTP_PORT', 587))
-        self.smtp_username = "username"  
-        self.smtp_password = "smtp_password"  
-        self.from_email = "from_email"
-        self.from_name = "from_name"
-        
+        self.smtp_username = os.getenv('SMTP_USERNAME')
+        self.smtp_password = os.getenv('SMTP_PASSWORD')
+        self.from_email = os.getenv('FROM_EMAIL')
+        self.from_name = os.getenv('FROM_NAME')
+
         # Validate required configuration
         if not all([self.smtp_host, self.smtp_username, self.smtp_password, self.from_email]):
             raise ValueError("Missing required SMTP configuration in .env file")
 
-    def send_email(self, to_email, body, html_body=None, attachments=None):
+    def send_email(self, to_email, body, html_body=None, subject=None, attachments=None):
         """
         Send an email using SMTP
         
@@ -41,7 +41,7 @@ class SMTPEmailSender:
             # Create message
             msg = MIMEMultipart('alternative')
             msg['From'] = f"{self.from_name} <{self.from_email}>"
-            msg['Subject'] = "This is a test subject"
+            msg['Subject'] = subject or "No Subject"
 
             # Handle multiple recipients
             if isinstance(to_email, list):
@@ -102,6 +102,7 @@ def main():
         print("Sending simple text email...")
         success = email_sender.send_email(
             to_email="ahmeds@microsoft.com",
+            subject="Test Email from Python SMTP",
             body="This is a test email sent using Python and Azure Communication Services SMTP."
         )
         
@@ -125,7 +126,8 @@ def main():
             email_sender.send_email(
                 to_email="ahmeds@microsoft.com",
                 body="This is the plain text version of the email.",
-                html_body=html_content
+                html_body=html_content,
+                subject="Test Email from Python SMTP"
             )
         
         # Example 3: Send email with attachment (uncomment to use)

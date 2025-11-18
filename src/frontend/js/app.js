@@ -155,10 +155,37 @@ function hideLoading() {
     loadingOverlay.classList.add('hidden');
 }
 
+/**
+ * Fetch and display dad joke from API
+ */
+async function fetchJoke() {
+    const jokeElement = document.getElementById('joke-of-the-day');
+    
+    try {
+        const API_BASE_URL = localStorage.getItem('apiBaseUrl') || 'http://localhost:5000/api';
+        const response = await fetch(`${API_BASE_URL}/joke`);
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch joke');
+        }
+        
+        const data = await response.json();
+        jokeElement.textContent = data.joke;
+        jokeElement.classList.remove('loading');
+        
+    } catch (error) {
+        console.error('Error fetching joke:', error);
+        jokeElement.textContent = 'Why did the soccer player bring string to the game? To tie the score!';
+        jokeElement.classList.remove('loading');
+    }
+}
+
 // Initialize the application
 function initializeApp() {
     // Show dashboard by default
     showSection(dashboardSection);
+    // Fetch and display dad joke
+    fetchJoke();
 }
 
 // Call when DOM is ready
