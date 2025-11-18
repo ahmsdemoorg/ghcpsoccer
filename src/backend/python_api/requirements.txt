@@ -1,0 +1,7 @@
+# Python API for Soccer Team Management - Requirements
+
+Flask==2.0.1
+Flask-CORS==3.0.10
+SQLAlchemy==1.4.46
+Flask-SQLAlchemy==2.5.1
+requests==2.31.0

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soccer Team Management</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>Soccer Team Management</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" id="dashboard-link" class="active">Dashboard</a></li>
+                <li><a href="#" id="teams-link">Teams</a></li>
+                <li><a href="#" id="players-link">Players</a></li>
+                <li><a href="#" id="reports-link">Reports</a></li>
+            </ul>
+        </nav>
+        <div class="settings-icon">
+            <button id="settings-btn" title="Settings">⚙️</button>
+        </div>
+    </header>
+
+    <main>
+        <div id="dashboard-section" class="section active">
+            <h2>Dashboard</h2>
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <h3>Total Teams</h3>
+                    <p id="total-teams">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Players</h3>
+                    <p id="total-players">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Injured Players</h3>
+                    <p id="injured-players">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Average Player Value</h3>
+                    <p id="avg-player-value">$0</p>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <h3>Quick Actions</h3>
+                <div class="action-buttons">
+                    <button id="add-team-btn">Add Team</button>
+                    <button id="add-player-btn">Add Player</button>
+                    <button id="generate-report-btn">Generate Report</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="teams-section" class="section">
+            <h2>Teams</h2>
+            <div class="toolbar">
+                <button id="new-team-btn">+ New Team</button>
+                <div class="filter-container">
+                    <input type="text" id="team-search" placeholder="Search teams...">
+                    <select id="country-filter">
+                        <option value="">All Countries</option>
+                    </select>
+                    <select id="league-filter">
+                        <option value="">All Leagues</option>
+                    </select>
+                </div>
+            </div>
+            <table id="teams-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Country</th>
+                        <th>League</th>
+                        <th>Value</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="teams-list">
+                    <!-- Teams will be loaded here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="players-section" class="section">
+            <h2>Players</h2>
+            <div class="players-wrapper">
+                <div class="players-toolbar">
+                    <input id="player-search" placeholder="Search players">
+                    <select id="team-filter"><option value="">All Teams</option></select>
+                    <select id="position-filter"><option value="">All Positions</option></select>
+                    <select id="injury-filter">
+                      <option value="">All</option>
+                      <option value="true">Injured</option>
+                      <option value="false">Healthy</option>
+                    </select>
+                    <button id="new-player-btn">New Player</button>
+                  </div>
+                  <table id="players-table">
+                    <thead>
+                      <tr>
+                        <th>Name</th><th>Team</th><th>Pos</th><th>Rating</th><th>Value</th><th>Injured</th><th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="players-list">
+                      <!-- Players will be loaded here by JavaScript -->
+                    </tbody>
+                  </table>
+                </div>
+        </div>
+
+        <div id="reports-section" class="section">
+            <h2>Reports</h2>
+            <div class="report-options">
+                <h3>Select Report Type</h3>
+                <select id="report-type">
+                    <option value="team-composition">Team Composition</option>
+                    <option value="player-performance">Player Performance</option>
+                    <option value="value-report">Value Report</option>
+                    <option value="injury-report">Injury Report</option>
+                </select>
+
+                <div class="report-filters">
+                    <h3>Report Filters</h3>
+                    <div id="team-filter-container">
+                        <label for="report-team">Team:</label>
+                        <select id="report-team">
+                            <option value="">Select a Team</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="run-report-btn">Generate Report</button>
+            </div>
+
+            <div id="report-results" class="hidden">
+                <h3>Report Results</h3>
+                <div id="report-content"></div>
+                <button id="export-report-btn">Export to CSV</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal for adding/editing teams -->
+    <div id="team-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="team-modal-title">Add Team</h2>
+            <form id="team-form">
+                <input type="hidden" id="team-id">
+                <div class="form-group">
+                    <label for="team-name">Team Name</label>
+                    <input type="text" id="team-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="team-year">Established Year</label>
+                    <input type="number" id="team-year" required>
+                </div>
+                <div class="form-group">
+                    <label for="team-stadium">Home Stadium</label>
+                    <input type="text" id="team-stadium" required>
+                </div>
+                <div class="form-group">
+                    <label for="team-colors">Club Colors</label>
+                    <input type="text" id="team-colors" required>
+                </div>
+                <div class="form-group">
+                    <label for="team-country">Country</label>
+                    <input type="text" id="team-country" required>
+                </div>
+                <div class="form-group">
+                    <label for="team-league">League</label>
+                    <input type="text" id="team-league" required>
+                </div>
+                <div class="form-group">
+                    <label for="team-position">Current Season Position</label>
+                    <input type="number" id="team-position" required>
+                </div>
+                <div class="form-group">
+                    <label for="team-value">Team Value ($)</label>
+                    <input type="number" id="team-value" required>
+                </div>
+                <div class="form-group">
+                    <label for="team-description">Description</label>
+                    <textarea id="team-description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="team-wiki">Wikipedia Link</label>
+                    <input type="url" id="team-wiki">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="save-team-btn">Save</button>
+                    <button type="button" id="cancel-team-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for adding/editing players -->
+    <div id="player-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="player-modal-title">Add Player</h2>
+            <form id="player-form">
+                <input type="hidden" id="player-id">
+                <div class="form-group">
+                    <label for="player-name">Full Name</label>
+                    <input type="text" id="player-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="player-dob">Date of Birth</label>
+                    <input type="date" id="player-dob" required>
+                </div>
+                <div class="form-group">
+                    <label for="player-nationality">Nationality</label>
+                    <input type="text" id="player-nationality" required>
+                </div>
+                <div class="form-group">
+                    <label for="player-position">Position</label>
+                    <select id="player-position" required>
+                        <option value="Goalkeeper">Goalkeeper</option>
+                        <option value="Defender">Defender</option>
+                        <option value="Midfielder">Midfielder</option>
+                        <option value="Forward">Forward</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="player-number">Jersey Number</label>
+                    <input type="number" id="player-number" required>
+                </div>
+                <div class="form-group">
+                    <label for="player-height">Height (cm)</label>
+                    <input type="number" step="0.01" id="player-height" required>
+                </div>
+                <div class="form-group">
+                    <label for="player-weight">Weight (kg)</label>
+                    <input type="number" step="0.01" id="player-weight" required>
+                </div>
+                <div class="form-group">
+                    <label for="player-team">Team</label>
+                    <select id="player-team" required>
+                        <!-- Teams will be loaded here by JavaScript -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="player-value">Player Value ($)</label>
+                    <input type="number" id="player-value" required>
+                </div>
+                <div class="form-group">
+                    <label for="player-injured">Injury Status</label>
+                    <select id="player-injured">
+                        <option value="false">Not Injured</option>
+                        <option value="true">Injured</option>
+                    </select>
+                </div>
+                <div class="form-group injury-details hidden">
+                    <label for="injury-details">Injury Details</label>
+                    <textarea id="injury-details" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="player-rating">Performance Rating (1-10)</label>
+                    <input type="number" min="1" max="10" id="player-rating" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="save-player-btn">Save</button>
+                    <button type="button" id="cancel-player-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Settings modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Application Settings</h2>
+            <div class="form-group">
+                <label for="api-type">Backend API:</label>
+                <select id="api-type">
+                    <option value="python">Python API</option>
+                    <option value="csharp">C# API</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="api-url">API Base URL:</label>
+                <input type="text" id="api-url" placeholder="http://localhost:5000/api">
+            </div>
+            <div id="api-status" class="status-indicator">
+                <span class="status-dot"></span>
+                <span class="status-text">Checking connection...</span>
+            </div>
+            <div class="form-actions">
+                <button id="save-settings-btn">Save Settings</button>
+                <button id="test-api-btn">Test Connection</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading indicator -->
+    <div id="loading-overlay" class="hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- API Configuration -->
+    <script src="js/config.js?v=20250908a"></script>
+    
+    <!-- Core JavaScript (versioned for cache busting) -->
+    <script src="js/app.js?v=20250908a"></script>
+    <script src="js/teams.js?v=20250908a"></script>
+    <script src="js/players.js?v=20250908a"></script>
+    <script src="js/reports.js?v=20250908b"></script>
+    <script src="js/settings.js?v=20250908a"></script>
+</body>
+</html>
