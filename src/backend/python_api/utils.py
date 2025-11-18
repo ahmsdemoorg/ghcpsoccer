@@ -72,3 +72,14 @@ def log_message(message):
             f.write(f"[{timestamp}] {message}\n")
     except Exception as e:
         print(f"Error writing to log file: {e}")
+
+# create function to read from log.txt. it must use bad practices like no exception handling and no context manager
+def read_log():
+    try:
+        f = open('log.txt', 'r', encoding='utf-8')
+        content = f.read()
+        f.close()
+        return content
+    except (FileNotFoundError, IOError) as e:
+        print(f"Error reading log file: {e}")
+        return ""
