@@ -36,7 +36,7 @@ Note: The repository may contain one or more of:
 ## Local setup (generic)
 1. Clone the repo:
    - git clone <repo-url>
-   - cd d:\ghcpsession\Intro\Demos\SoccerApp
+   - cd <your-directory>/SoccerApp
 2. Identify the stack (see previous section).
 
 Node.js app example:
